@@ -1,39 +1,31 @@
 var tilingRectangle = function (n, m) {
     let minSquaresNeeded = Infinity;
-    let mem = {};
     const area = n * m;
-    const minOfNandM = Math.min(n, m);
-    
+
     const numberOfSquaresForArea = 0;
 
-    minSquaresNeeded = dfs(minOfNandM, area, numberOfSquaresForArea, minSquaresNeeded);
+    minSquaresNeeded = dfs(m, n, area, minSquaresNeeded, []);
 
     return minSquaresNeeded;
 };
 
-function dfs(minOfNandM, area, numberOfSquaresForArea, minSquaresNeeded) {
-    //if (mem[area]) return mem[area];
-    if (minOfNandM === 0 || area === 0) {
-        minSquaresNeeded = Math.min(minSquaresNeeded, numberOfSquaresForArea);
-        //mem[area] = minSquaresNeeded;
+function dfs(m, n, area, minSquaresNeeded, minSquares) {
+
+    let minOfNandM = Math.min(m, n);
+
+    if (area === 0) {
+        minSquaresNeeded = Math.min(minSquaresNeeded, minSquares.length);
         return minSquaresNeeded;
     }
 
-
-
     while (minOfNandM > 0) {
-        const numberOfSquaresNeededForI = parseInt(area / (minOfNandM * minOfNandM));
-        if (numberOfSquaresNeededForI !== 0) {
-            numberOfSquaresForArea += numberOfSquaresNeededForI;
-            const remArea = area % (minOfNandM * minOfNandM);
-            minSquaresNeeded = dfs(remArea/minOfNandM, remArea, numberOfSquaresForArea, minSquaresNeeded);
-            //numberOfSquaresForArea = 0;
+        const areaOfI = minOfNandM * minOfNandM;
+        if (areaOfI <= area) {
+            minSquaresNeeded = dfs(m - (minOfNandM % m), n - (minOfNandM % n), area - (minOfNandM * minOfNandM), minSquaresNeeded, [...minSquares, minOfNandM]);
         }
         minOfNandM--;
     }
-
-    //mem[area] = minSquaresNeeded;
     return minSquaresNeeded;
 }
 
-console.log(tilingRectangle(11, 13));
+console.log(tilingRectangle(11,13));
