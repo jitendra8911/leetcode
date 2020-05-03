@@ -1,0 +1,50 @@
+/**
+ * @param {number[]} arr
+ * @param {number} target
+ * @return {number}
+ */
+var findBestValue = function(arr, target) {
+
+    let minDiff = Infinity;
+    let value = 0;
+    let start = 1;
+    let end = target;
+    while (start < end) {
+        let mid = Math.floor((end + start)/2);
+        let nextToMid = mid + 1;
+        let sum1 = 0;
+        let sum2 = 0;
+        for (let i = 0; i < arr.length; i++) {
+            if (arr[i] > mid) {
+                sum1 = sum1 + mid;
+            } else {
+                sum1 = sum1 + arr[i];
+            }
+            if (arr[i] > nextToMid) {
+                sum2 = sum2 + nextToMid;
+            } else {
+                sum2 = sum2 + arr[i];
+            }
+        }
+        let diff1 = Math.abs(sum1 - target);
+        let diff2 = Math.abs(sum2 - target);
+        if (end === start + 1) {
+            if (diff1 > diff2) {
+                return end;
+            } else return start;
+        }
+        if (diff1 > diff2) {
+            start = mid;
+        } else if (diff1 < diff2){
+            end = mid;
+        } else {
+            start = mid;
+            end = mid;
+        }
+    }
+
+    return start;
+
+};
+
+console.log(findBestValue([60864,25176,27249,21296,20204], 56803));
